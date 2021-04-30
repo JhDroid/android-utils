@@ -3,24 +3,22 @@ package com.jhdroid.utils.listener
 import android.os.SystemClock
 import android.view.View
 
-abstract class OnIntervalClickListener : View.OnClickListener {
-    private var mLastClickTime: Long = 0
-
-    abstract fun onIntervalClick(v: View?)
+class OnIntervalClickListener(
+    private val listener: View.OnClickListener,
+    private val interval: Long = 2000
+) : View.OnClickListener {
+    private var lastClickTime: Long = 0
 
     override fun onClick(v: View) {
         val currentClickTime = SystemClock.uptimeMillis()
-        val elapsedTime = currentClickTime - mLastClickTime
-        mLastClickTime = currentClickTime
+        val elapsedTime = currentClickTime - lastClickTime
+        lastClickTime = currentClickTime
 
         // 중복 클릭으로 판단
-        if (elapsedTime <= MIN_CLICK_INTERVAL) {
+        if (elapsedTime <= interval) {
             return
         }
-        onIntervalClick(v)
-    }
 
-    companion object {
-        private const val MIN_CLICK_INTERVAL: Long = 2000
+        listener.onClick(v)
     }
 }
