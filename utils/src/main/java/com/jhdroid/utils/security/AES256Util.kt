@@ -1,14 +1,5 @@
 package com.jhdroid.utils.security
 
-//import android.content.res.Resources
-//import android.security.KeyPairGeneratorSpec
-//import java.io.ByteArrayInputStream
-//import java.math.BigInteger
-//import java.security.KeyPairGenerator
-//import java.security.SecureRandom
-//import java.util.*
-//import javax.crypto.CipherInputStream
-//import javax.security.auth.x500.X500Principal
 import android.content.Context
 import android.os.Build
 import android.security.keystore.KeyGenParameterSpec
@@ -24,7 +15,6 @@ import javax.crypto.KeyGenerator
 import javax.crypto.spec.GCMParameterSpec
 import javax.crypto.spec.IvParameterSpec
 import javax.crypto.spec.SecretKeySpec
-
 
 /*
 Licensed under the Apache License, Version 2.0 (the "License");
@@ -80,34 +70,6 @@ object AES256Util {
                     }
                 }
 
-//                Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2 -> {
-//                    keyStore = KeyStore.getInstance(AndroidKeyStore)
-//                    keyStore.load(null)
-//
-//                    if (!keyStore.containsAlias(KEY_ALIAS)) {
-//                        val defaultLocale = Locale.getDefault()
-//                        setLocale(Locale.ENGLISH)
-//
-//                        val start = Calendar.getInstance()
-//                        val end = Calendar.getInstance()
-//                        end.add(Calendar.YEAR, 30)
-//
-//                        val spec = KeyPairGeneratorSpec.Builder(context)
-//                            .setAlias(KEY_ALIAS)
-//                            .setSubject(X500Principal("CN=$KEY_ALIAS"))
-//                            .setSerialNumber(BigInteger.TEN)
-//                            .setStartDate(start.time)
-//                            .setEndDate(end.time)
-//                            .build()
-//
-//                        val kpg = KeyPairGenerator.getInstance("RSA", AndroidKeyStore)
-//                        kpg.initialize(spec)
-//                        kpg.generateKeyPair()
-//
-//                        setLocale(defaultLocale)
-//                    }
-//                }
-
                 else -> {
                     val keyGenerator = KeyGenerator.getInstance("AES")
                     keyGenerator.init(256)
@@ -147,11 +109,6 @@ object AES256Util {
                 )
             }
 
-//            Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2 -> {
-//                c = Cipher.getInstance(AES_MODE_GCM, "BC")
-//                c.init(Cipher.ENCRYPT_MODE, getSecretKey(), IvParameterSpec(iv.toByteArray()))
-//            }
-
             else -> {
                 c = Cipher.getInstance(AES_MODE_CBC)
                 c.init(Cipher.ENCRYPT_MODE, keySpec, IvParameterSpec(iv.toByteArray()))
@@ -177,11 +134,6 @@ object AES256Util {
                     GCMParameterSpec(128, iv.toByteArray(charset("UTF-8")))
                 )
             }
-
-//            Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2 -> {
-//                c = Cipher.getInstance(AES_MODE_GCM, "BC")
-//                c.init(Cipher.DECRYPT_MODE, getSecretKey(), IvParameterSpec(iv.toByteArray()))
-//            }
 
             else -> {
                 c = Cipher.getInstance(AES_MODE_CBC)
@@ -215,61 +167,4 @@ object AES256Util {
 
         return outputStream.toByteArray()
     }
-
-//    @Throws(Exception::class)
-//    private fun getSecretKey(): Key? {
-//        val prefs = context.getSharedPreferences(
-//            context.packageName, Context.MODE_PRIVATE
-//        )
-//
-//        var encryptedKeyB64 = prefs.getString("keyAesKey", null)
-//        if (encryptedKeyB64 == null) {
-//            val key = ByteArray(16)
-//            val secureRandom = SecureRandom()
-//            secureRandom.nextBytes(key)
-//            val encryptedKey: ByteArray = rsaEncrypt(key)
-//            encryptedKeyB64 = Base64.encodeToString(encryptedKey, Base64.DEFAULT)
-//            if (encryptedKeyB64 != null && encryptedKeyB64.isNotEmpty()) {
-//                val editor = prefs.edit()
-//                editor.putString("keyAesKey", encryptedKeyB64)
-//                editor.apply()
-//            }
-//        }
-//
-//        val encryptedKey = Base64.decode(encryptedKeyB64, Base64.DEFAULT)
-//        val key = rsaDecrypt(encryptedKey)
-//        return SecretKeySpec(key, "AES")
-//    }
-//
-//    @Throws(Exception::class)
-//    private fun rsaDecrypt(encrypted: ByteArray): ByteArray {
-//        val privateKeyEntry =
-//            keyStore.getEntry(KEY_ALIAS, null) as KeyStore.PrivateKeyEntry
-//
-//        val output = Cipher.getInstance(RSA_MODE, "AndroidOpenSSL")
-//        output.init(Cipher.DECRYPT_MODE, privateKeyEntry.privateKey)
-//
-//        val cipherInputStream = CipherInputStream(
-//            ByteArrayInputStream(encrypted), output
-//        )
-//        val values = ArrayList<Byte>()
-//        var nextByte: Int
-//        while (cipherInputStream.read().also { nextByte = it } != -1) {
-//            values.add(nextByte.toByte())
-//        }
-//        val bytes = ByteArray(values.size)
-//        for (i in bytes.indices) {
-//            bytes[i] = values[i]
-//        }
-//
-//        return bytes
-//    }
-
-//    private fun setLocale(locale: Locale) {
-//        Locale.setDefault(locale)
-//        val resources: Resources = OnAvApplication.getContext().resources
-//        val config = resources.configuration
-//        config.locale = locale
-//        resources.updateConfiguration(config, resources.displayMetrics)
-//    }
 }
