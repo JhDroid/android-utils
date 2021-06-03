@@ -48,7 +48,7 @@ object Utils {
         }
     }
 
-    fun getAppNameByPackage(context: Context, packageName: String): String {
+    fun getAppNameByPackage(context: Context, packageName: String): String? {
         return try {
             val packageManager = context.packageManager
             val appInfo = packageManager.getApplicationInfo(packageName, 0)
@@ -59,7 +59,7 @@ object Utils {
                 e.printStackTrace()
             }
 
-            "unknown"
+            null
         }
     }
 
