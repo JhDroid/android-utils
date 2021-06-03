@@ -67,20 +67,19 @@ object Utils {
     fun checkWebView(context: Context): Boolean {
         return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             val currentWebViewPackage = WebView.getCurrentWebViewPackage()
-
             currentWebViewPackage != null
         } else {
             try {
-                context.packageManager.getPackageInfo(
-                    "com.google.android.webview", PackageManager.GET_META_DATA)
-
+                context.packageManager.getPackageInfo("com.google.android.webview", PackageManager.GET_META_DATA)
                 true
-            } catch (e: PackageManager.NameNotFoundException) {
-                if (BuildConfig.DEBUG) {
-                    e.printStackTrace()
+            } catch (e1: PackageManager.NameNotFoundException) {
+                try {
+                    // 안드로이드 시스템 웹뷰를 사용하지 않으면 기본 웹뷰를 참조함
+                    context.packageManager.getPackageInfo("com.android.webview", PackageManager.GET_META_DATA)
+                    true
+                } catch (e2: PackageManager.NameNotFoundException) {
+                    false
                 }
-
-                false
             }
         }
     }
