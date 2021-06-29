@@ -18,6 +18,3 @@
     - Event : ViewModel에서 이벤트 처리를 위한 핸들러
 - listener
     - OnIntervalClickListener : 중복 클릭 방지(postDelayed 사용)
-- security
-    - AES256Util : 데이터 암/복호화
-

@@ -35,45 +35,5 @@
             android:layout_height="wrap_content"
             android:text="EVENT_TEST"
             android:onClick="@{() -> viewModel.moveSubActivity()}" />
-
-        <TextView
-            android:id="@+id/encode_test_txt"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:textSize="16sp"
-            android:textStyle="bold"
-            android:textColor="@color/black"
-            android:text="Encoding Test" />
-
-        <EditText
-            android:id="@+id/encode_data_edt"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:ems="10"
-            android:hint="Input Data" />
-
-        <TextView
-            android:id="@+id/encode_result_tv"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
-            android:layout_marginBottom="5dp"
-            android:textSize="16sp"
-            android:text="RESULT"/>
-
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/encode_test_btn"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Encode"
-            android:onClick="@{() -> viewModel.encodeData(encodeDataEdt.getText().toString())}"/>
-
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/decode_test_btn"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Decode"
-            android:onClick="@{() -> viewModel.decodeData(encodeResultTv.getText().toString())}"/>
     </LinearLayout>
 </layout>
