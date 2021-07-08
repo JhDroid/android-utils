@@ -1,13 +1,16 @@
 package com.jhdroid.utils.common
 
 import android.annotation.SuppressLint
+import android.app.Activity
 import android.content.Context
 import android.content.pm.PackageManager
 import android.graphics.drawable.Drawable
 import android.os.Build
 import android.provider.Settings
-import android.util.Log
+import android.view.View
 import android.webkit.WebView
+import androidx.annotation.ColorRes
+import androidx.core.content.ContextCompat
 import com.jhdroid.utils.BuildConfig
 import java.io.UnsupportedEncodingException
 import java.util.*
@@ -71,16 +74,45 @@ object Utils {
         } else {
             try {
                 context.packageManager.getPackageInfo("com.google.android.webview", PackageManager.GET_META_DATA)
+
                 true
             } catch (e1: PackageManager.NameNotFoundException) {
                 try {
-                    // 안드로이드 시스템 웹뷰를 사용하지 않으면 기본 웹뷰를 참조함
                     context.packageManager.getPackageInfo("com.android.webview", PackageManager.GET_META_DATA)
+
                     true
                 } catch (e2: PackageManager.NameNotFoundException) {
                     false
                 }
             }
         }
+    }
+
+    fun setStatusBarColor(context: Context, @ColorRes resId: Int) {
+        val activity: Activity
+
+        if (context is Activity) {
+            activity = context
+        } else {
+            return
+        }
+
+        when {
+            Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP -> {
+                val window = activity.window
+                window.statusBarColor = ContextCompat.getColor(context, resId)
+            }
+            else -> {
+                activity.titleColor = ContextCompat.getColor(context, resId)
+            }
+        }
+    }
+
+    fun dp2px(view: View, dp: Float): Float {
+        return dp * view.resources.displayMetrics.density + 0.5f
+    }
+
+    fun sp2px(view: View, sp: Float): Float {
+        return sp * view.resources.displayMetrics.scaledDensity
     }
 }
